@@ -28,15 +28,15 @@ app.get('/', (req, res) => res.send('hello world'));
 // CRUD applications
 
 // GET from postgres
-app.get('/db/books', function(req,res) {
-  client.query(`SELECT * FROM books;`)
-    .then(function(data) {
-      res.send(data);
-    })
-    .catch(function(err) {
-      console.error(err);
-    })
-});
+// app.get('/db/books', function(req,res) {
+//   client.query(`SELECT * FROM books;`)
+//     .then(function(data) {
+//       res.send(data);
+//     })
+//     .catch(function(err) {
+//       console.error(err);
+//     })
+// });
 
 // app.post('/db/books', function(req,res) {
 //   client.query(`
