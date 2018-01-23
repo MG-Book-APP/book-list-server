@@ -38,37 +38,43 @@ app.get('/db/books', function(req,res) {
     })
 });
 
-app.post('/db/books', function(req,res) {
-  client.query(`
-    INSERT INTO books(title,author,url)
-    VALUES($1, $2, $3;`,
-    [
-      req.body.title,
-      req.body.author,
-      req.body.url
-    ])
-    .then(function(data) {
-      res.redirect('/');
-    })
-})
+// app.post('/db/books', function(req,res) {
+//   client.query(`
+//     INSERT INTO books(title,author,url)
+//     VALUES($1, $2, $3;`,
+//     [
+//       req.body.title,
+//       req.body.author,
+//       req.body.url
+//     ])
+//     .then(function(data) {
+//       res.redirect('/');
+//     })
+// })
 
 // POST from client to postgres
 
-// if table has not been created, create one
-function createTable() {
-  client.query(`
-        CREATE TABLE IF NOT EXISTS books(
-            title VARCHAR(255)
-            author VARCHAR(255)
-            url VARCHAR(255)
-        );
-    `)
-    .then(function(res) {
-      console.log('success! created table')
+// DATABASE LOADER
+loadDB();
+
+function loadBooks() {
+  fs.readFile('../book-list-client/data/books.json', function(err, fd) {
+    JSON.parse(fd.toString()).forEach(function(ele) {
+      client.query(
+        'INSERT INTO books(title, author, isbn, image_url, description) VALUES($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
+        [ele.title, ele.author, ele.isbn, ele.image_url, ele.description]
+      )
     })
+  })
 }
 
-createTable();
+function loadDB() {
+  client.query(`
+   CREATE TABLE IF NOT EXISTS
+   books(id SERIAL PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), isbn VARCHAR(255), image_url VARCHAR(255), description TEXT NOT NULL);
+   `)
+  .then(loadBooks());
+}
 
 // get server up and running
 app.listen(PORT, () => {
