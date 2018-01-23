@@ -5,9 +5,9 @@ const express = require('express');
 const pg = require('pg');
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const CLIENT_URL = process.env.CLIENT_URL;
 
 // use modules
-app.use(cors());
 const app = express();
 const PORT = process.env.PORT;
 
@@ -17,14 +17,13 @@ const client = new pg.Client(connectionString);
 client.connect();
 
 // middleware components
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static('./client'));
 
 // routes
-app.get('/', function (req, res) {
-  res.send('hello world');
-});
+app.get('/', (req, res) => res.send('hello world'));
 
 // // CRUD applications
 // // GET from postgres
@@ -49,5 +48,5 @@ app.get('/', function (req, res) {
 
 // get server up and running
 app.listen(PORT, () => {
-    console.log(`currently listening on ${PORT}`);
+  console.log(`currently listening on ${PORT}`);
 })
