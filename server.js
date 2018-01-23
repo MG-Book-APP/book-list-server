@@ -26,7 +26,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => res.send('hello world'));
 
 // CRUD applications
-app.post('/db/person', function(req,res) {
+
+// GET from postgres
+app.get('/db/books', function(req,res) {
+  client.query(`SELECT * FROM books;`)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.error(err);
+    })
+});
+
+app.post('/db/books', function(req,res) {
   client.query(`
     INSERT INTO books(title,author,url)
     VALUES($1, $2, $3;`,
@@ -39,8 +51,6 @@ app.post('/db/person', function(req,res) {
       res.redirect('/');
     })
 })
-
-// GET from postgres
 
 // POST from client to postgres
 
