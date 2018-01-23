@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static('./client'));
 
 // routes
-app.get('/test', function (req, res) {
+app.get('/db/books', function (req, res) {
     response.send('hello world');
 });
 
