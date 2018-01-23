@@ -23,9 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static('./client'));
 
 // routes
-app.get('/', function (req, res) {
-  res.send('hello world');
-});
+app.get('/', (req, res) => res.send('hello world'));
 
 // // CRUD applications
 // // GET from postgres
@@ -50,5 +48,5 @@ app.get('/', function (req, res) {
 
 // get server up and running
 app.listen(PORT, () => {
-    console.log(`currently listening on ${PORT}`);
+  console.log(`currently listening on ${PORT}`);
 })
