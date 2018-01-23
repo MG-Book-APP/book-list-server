@@ -6,14 +6,14 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT;
 
-const conString = '';
+const connectionString = process.env.DATABASE_URL;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('./client'));
+// app.use(express.static('./client'));
 
-app.get('/', function (req, res) {
-    response.sendFile('./client/index.html');
+app.get('/test', function (req, res) {
+    response.send('hello world');
 });
 
 app.listen(PORT, () => {
