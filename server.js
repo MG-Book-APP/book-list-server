@@ -23,29 +23,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.get('/db/books', function (req, res) {
-    response.send('hello world');
+  res.send('hello world');
 });
 
-// CRUD applications
-// GET from postgres
+// // CRUD applications
+// // GET from postgres
 
-// POST from client to postgres
+// // POST from client to postgres
 
-// if table has not been created, create one
-function createTable() {
-    client.query(`
-        CREATE TABLE IF NOT EXISTS books(
-            title VARCHAR(255)
-            author VARCHAR(255)
-            url VARCHAR(255)
-        );
-    `)
-    .then(function(response) {
-        console.log('success! created table')
-    })
-}
+// // if table has not been created, create one
+// function createTable() {
+//     client.query(`
+//         CREATE TABLE IF NOT EXISTS books(
+//             title VARCHAR(255)
+//             author VARCHAR(255)
+//             url VARCHAR(255)
+//         );
+//     `)
+//     .then(function(response) {
+//         console.log('success! created table')
+//     })
+// }
 
-createTable();
+// createTable();
 
 // get server up and running
 app.listen(PORT, () => {
