@@ -25,26 +25,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // routes
 app.get('/', (req, res) => res.send('hello world'));
 
-// // CRUD applications
-// // GET from postgres
+// CRUD applications
+app.post('/db/person', function(req,res) {
+  client.query(`
+    INSERT INTO books(title,author,url)
+    VALUES($1, $2, $3;`,
+    [
+      req.body.title,
+      req.body.author,
+      req.body.url
+    ])
+    .then(function(data) {
+      res.redirect('/');
+    })
+})
 
-// // POST from client to postgres
+// GET from postgres
 
-// // if table has not been created, create one
-// function createTable() {
-//     client.query(`
-//         CREATE TABLE IF NOT EXISTS books(
-//             title VARCHAR(255)
-//             author VARCHAR(255)
-//             url VARCHAR(255)
-//         );
-//     `)
-//     .then(function(response) {
-//         console.log('success! created table')
-//     })
-// }
+// POST from client to postgres
 
-// createTable();
+// if table has not been created, create one
+function createTable() {
+  client.query(`
+        CREATE TABLE IF NOT EXISTS books(
+            title VARCHAR(255)
+            author VARCHAR(255)
+            url VARCHAR(255)
+        );
+    `)
+    .then(function(res) {
+      console.log('success! created table')
+    })
+}
+
+createTable();
 
 // get server up and running
 app.listen(PORT, () => {
