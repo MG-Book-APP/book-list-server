@@ -40,7 +40,8 @@ app.get('/api/v1/books', function(req,res) {
 loadDB();
 
 function loadBooks() {
-  fs.readFile('../book-list-client/data/books.json', function(err, fd) {
+  // adding this in even though it's hacky and not secure
+  fs.readFile('https://mg-book-app.github.io/book-list-client/data/books.json', function(err, fd) {
     console.log(err);
     JSON.parse(fd.toString()).forEach(function(ele) {
       client.query(
