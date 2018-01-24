@@ -50,6 +50,6 @@ function loadDB() {
 }
 
 // get server up and running
-app.listen(PORT, () => {
-  console.log(`currently listening on ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`currently listening on ${process.env.PORT}`);
 })
