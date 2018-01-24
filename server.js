@@ -1,11 +1,11 @@
 'use strict';
 
 // require modules
+const fs = require('fs');
 const express = require('express');
 const pg = require('pg');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fs = require('fs');
 const CLIENT_URL = process.env.CLIENT_URL;
 
 // use modules
@@ -25,6 +25,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
 app.get('/', (req, res) => res.send('hello world'));
+
+app.get('/api/v1/books', function(req,res) {
+  client.query(`SELECT * FROM books`)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.error('no data loaded:',err);
+    })
+})
 
 // CRUD applications
 loadDB();
