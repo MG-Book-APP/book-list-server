@@ -36,29 +36,46 @@ app.get('/api/v1/books', function(req,res) {
     })
 })
 
-// CRUD applications
-loadDB();
-
-function loadBooks() {
-  // adding this in even though it's hacky and not secure
-  fs.readFile('https://mg-book-app.github.io/book-list-client/data/books.json', function(err, fd) {
-    console.log(err);
-    JSON.parse(fd.toString()).forEach(function(ele) {
-      client.query(
-        'INSERT INTO books(title, author, isbn, image_url, description) VALUES($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
-        [ele.title, ele.author, ele.isbn, ele.image_url, ele.description]
-      )
+// LOAD BOOKS FROM FORM
+app.post('/api/v1/books', function(req,res) {
+  client.query(`INSERT INTO books(author, title, isbn, image_url, description)
+  VALUES($1, $2, $3, $4, $5);`,
+    [ // when we get a post request to API, query DB, dynamically pass values
+      req.body.author,
+      req.body.title,
+      req.body.isbn,
+      req.body.image_url,
+      req.body.description,
+    ]
+  )
+    .then(function(data) {
+      console.log('data passed:',data);
+      res.redirect('/')
     })
-  })
-}
+})
 
-function loadDB() {
-  client.query(`
-   CREATE TABLE IF NOT EXISTS
-   books(id SERIAL PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), isbn VARCHAR(255), image_url VARCHAR(255), description TEXT NOT NULL);
-   `)
-    .then(loadBooks());
-}
+// CRUD applications
+// loadDB();
+
+// function loadBooks() {
+//   fs.readFile('../book-list-client/data/books.json', function(err, fd) {
+//     console.log(err);
+//     JSON.parse(fd.toString()).forEach(function(ele) {
+//       client.query(
+//         'INSERT INTO books(title, author, isbn, image_url, description) VALUES($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
+//         [ele.title, ele.author, ele.isbn, ele.image_url, ele.description]
+//       )
+//     })
+//   })
+// }
+
+// function loadDB() {
+//   client.query(`
+//    CREATE TABLE IF NOT EXISTS
+//    books(id SERIAL PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), isbn VARCHAR(255), image_url VARCHAR(255), description TEXT NOT NULL);
+//    `)
+//     .then(loadBooks());
+// }
 
 // get server up and running
 app.listen(PORT, () => {
