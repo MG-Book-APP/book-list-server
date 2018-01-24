@@ -31,6 +31,7 @@ loadDB();
 
 function loadBooks() {
   fs.readFile('../book-list-client/data/books.json', function(err, fd) {
+    console.log(err);
     JSON.parse(fd.toString()).forEach(function(ele) {
       client.query(
         'INSERT INTO books(title, author, isbn, image_url, description) VALUES($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
