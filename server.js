@@ -5,7 +5,6 @@ const express = require('express');
 const pg = require('pg');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const CLIENT_URL = process.env.CLIENT_URL;
 
 // use modules
 const app = express();
@@ -35,25 +34,7 @@ app.get('/api/v1/books', function(req,res) {
     })
 })
 
-// Add books from book.js
-app.post('/api/v1/books', function(req,res) {
-  client.query(`INSERT INTO books(author, title, isbn, image_url, description)
-  VALUES($1, $2, $3, $4, $5);`,
-    [ // when we get a post request to API, query DB, dynamically pass values
-      req.body.author,
-      req.body.title,
-      req.body.isbn,
-      req.body.image_url,
-      req.body.description,
-    ],
-    function(err) {
-      if (err) console.error(err)
-    }
-  )
-    .then(() => res.send('Insert complete'))
-})
-
-// Load books from form
+// Load books from book form
 app.post('/api/v1/books', function(req,res) {
   client.query(`INSERT INTO books(author, title, isbn, image_url, description)
   VALUES($1, $2, $3, $4, $5);`,
@@ -70,7 +51,7 @@ app.post('/api/v1/books', function(req,res) {
       res.redirect('/')
     })
 })
-
+ 
 // get server up and running
 app.listen(PORT, () => {
   console.log(`currently listening on ${PORT}`);
