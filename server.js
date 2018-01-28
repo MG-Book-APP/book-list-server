@@ -71,7 +71,7 @@ app.delete('/api/v1/books/:id', function(req,res) {
 });
 
 app.put('/api/v1/books/:id/:edit', function(req,res) {
-  console.log(req.body)
+  console.log('Server',req.body)
   client.query(`UPDATE * FROM WHERE id = ${req.params.id};`)
     .then(() => {
       client.query(`
