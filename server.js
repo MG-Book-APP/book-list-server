@@ -88,7 +88,7 @@ app.put('/api/v1/books/:id/:edit', function(req,res) {
           isbn=$3,
           image_url=$4,
           description=$5
-      WHERE id = ${req.params.id};
+      WHERE id = $6;
       `,
       [
         req.body.title,
