@@ -70,16 +70,34 @@ app.delete('/api/v1/books/:id', function(req,res) {
     })
 });
 
-// app.put('/api/v1/books/:id/:edit', function(req,res) {
-//   console.log(req.body)
-//   client.query(`UPDATE * FROM WHERE id = ${req.params.id};`)
-//     .then(() => {
-//       res.send('Book deleted');
-//     })
-//     .catch(function (err) {
-//       console.error(err);
-//     })
-// });
+app.put('/api/v1/books/:id/:edit', function(req,res) {
+  console.log(req.body)
+  client.query(`UPDATE * FROM WHERE id = ${req.params.id};`)
+    .then(() => {
+      client.query(`
+      UPDATE books
+      SET title=$1,
+          author=$2,
+          isbn=$3,
+          image_url=$4,
+          description=$5
+      WHERE id = ${req.params.id};
+      `,
+      [
+        req.body.title,
+        req.body.author,
+        req.body.isbn,
+        req.body.image_url,
+        req.body.description,
+        req.params.id
+      ]
+      )
+    })
+    .then(() => res.send('Book has been updated.'))
+    .catch(function (err) {
+      console.error(err);
+    })
+});
 
 function createTable() {
   client.query(`
