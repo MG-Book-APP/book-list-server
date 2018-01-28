@@ -18,9 +18,16 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 app.get('/api/v1/books', function(req,res) {
   client.query(`SELECT * FROM books`)
     .then(function(data) {
+      console.log('get all books route hit')
       res.send(data);
     })
     .catch(function(err) {
