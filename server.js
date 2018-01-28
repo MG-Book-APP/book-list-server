@@ -1,9 +1,9 @@
 'use strict';
 
+const cors = require('cors');
 const express = require('express');
 const pg = require('pg');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -17,12 +17,6 @@ client.connect();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
 
 app.get('/api/v1/books', function(req,res) {
   client.query(`SELECT * FROM books`)
@@ -65,18 +59,27 @@ app.post('/api/v1/books', function(req,res) {
     })
 })
 
-// delete single book
-app.delete('/api/v1/books/:id/'), function(req,res) {
-  client.query(`DELETE FROM books WHERE id=$1`,
-    [req.params.id]
-  )
+app.delete('/api/v1/books/:id', function(req,res) {
+  console.log(req.params.id)
+  client.query(`DELETE FROM books WHERE id = ${req.params.id};`)
     .then(() => {
       res.send('Book deleted');
     })
     .catch(function (err) {
       console.error(err);
     })
-}
+});
+
+// app.put('/api/v1/books/:id/:edit', function(req,res) {
+//   console.log(req.body)
+//   client.query(`UPDATE * FROM WHERE id = ${req.params.id};`)
+//     .then(() => {
+//       res.send('Book deleted');
+//     })
+//     .catch(function (err) {
+//       console.error(err);
+//     })
+// });
 
 function createTable() {
   client.query(`
