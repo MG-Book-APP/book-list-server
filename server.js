@@ -8,8 +8,8 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// const connectionString = process.env.DATABASE_URL;
-const connectionString = 'postgres://localhost:5432/books';
+const connectionString = process.env.DATABASE_URL;
+// const connectionString = 'postgres://localhost:5432/books';
 const client = new pg.Client(connectionString);
 client.connect();
 
@@ -38,19 +38,22 @@ app.get('/api/v1/books/:id', function(req,res) {
 })
 
 app.post('/api/v1/books', function(req,res) {
-  client.query(`INSERT INTO books(author, title, isbn, image_url, description)
+  client.query(`INSERT INTO books (author, title, isbn, image_url, description)
   VALUES($1, $2, $3, $4, $5);`,
     [
       req.body.author,
       req.body.title,
       req.body.isbn,
       req.body.image_url,
-      req.body.description,
+      req.body.description
     ]
   )
     .then(function(data) {
       console.log('data passed:',data);
-      res.redirect('/')
+      res.send('request complete');
+    })
+    .catch(function(err) {
+      console.error(err);
     })
 })
 
