@@ -67,9 +67,11 @@ app.post('/api/v1/books', function(req,res) {
 
 // delete single book
 app.delete('/api/v1/books/:id/'), function(req,res) {
-  client.query(`DELETE FROM books WHERE id=${req.params.id};`)
-    .then(function(data) {
-      res.send(data);
+  client.query(`DELETE FROM books WHERE id=$1`,
+    [req.params.id]
+  )
+    .then(() => {
+      res.send('Book deleted');
     })
     .catch(function (err) {
       console.error(err);
