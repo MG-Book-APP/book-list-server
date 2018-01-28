@@ -6,10 +6,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // const connectionString = 'postgres://localhost:5432/books';
-const connectionString = 'postgres://xealeyifxbxtdh:e1af3e1ffdc99abe7bb7d3dddfe719c695d9da36fb1aa8c78c92daa52f9e89a1@ec2-23-21-195-249.compute-1.amazonaws.com:5432/deptsmaqkmiugb';
+// const connectionString = 'postgres://xealeyifxbxtdh:e1af3e1ffdc99abe7bb7d3dddfe719c695d9da36fb1aa8c78c92daa52f9e89a1@ec2-23-21-195-249.compute-1.amazonaws.com:5432/deptsmaqkmiugb';
+const connectionString = process.env.DATABASE_URL;
 const client = new pg.Client(connectionString);
 client.connect();
 
